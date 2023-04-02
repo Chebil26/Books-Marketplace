@@ -15,6 +15,7 @@ dist/
 
 # Local development #
 ######################
+myenv/
 .myenv
 .myenv.local
 .myenv.development.local
