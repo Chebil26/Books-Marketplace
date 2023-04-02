@@ -1,0 +1,1 @@
+py manage.py load_books books/books.csv
