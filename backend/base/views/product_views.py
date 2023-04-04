@@ -3,24 +3,35 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated , IsAdminUser
+from rest_framework import status
 
 
 
-from base.models import Product
+from base.models import Product,Review, Store
 from base.serializers import ProductSerializer
 
 
 @api_view(['GET'])
 def getProducts(request):
     query = request.query_params.get('keyword')
-    print('aaaa', query)
     if query == None:
         query = ''
     products = Product.objects.filter(name__icontains=query)
     serializer = ProductSerializer(products, many=True)
-    print(serializer.data)
     return Response(serializer.data)
 
+@api_view(['GET'])
+def getProductsByStore(request, pk):
+    products = Product.objects.filter(store__id__icontains=pk)
+    serializer = ProductSerializer(products, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+def getTopProducts(request):
+    products = Product.objects.filter(rating__gte=4).order_by('-rating')[0:5]
+    serializer = ProductSerializer(products, many=True)
+    return Response(serializer.data)
 
 @api_view(['GET'])
 def getProduct(request, pk):
@@ -33,8 +44,9 @@ def getProduct(request, pk):
 # @permission_classes([IsAdminUser])
 def createProduct(request):
     user = request.user
+    store = Store.objects.get(id=user.id)
     product = Product.objects.create(
-        user = user,
+        store = store,
         name= 'sample name',
         price = 0,
         language = 'FR',
@@ -91,4 +103,48 @@ def uploadImage(request):
     product.save()
 
     return Response('Image was uploaded')
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def createProductReview(request, pk):
+    user = request.user
+    product = Product.objects.get(_id=pk)
+    data = request.data
+
+    #1 - Review already exists
+    alreadyExists = product.review_set.filter(user=user).exists()
+
+    if alreadyExists:
+        content = {'details': 'Book already reviewd'}
+        return Response(content, status=status.HTTP_400_BAD_REQUEST)
+
+    # 2 - No rating or 0 
+    elif data['rating'] == 0:
+        content = {'details': 'Please select a rating'}
+        return Response(content, status=status.HTTP_400_BAD_REQUEST)
+
+    # 3 - Create review 
+
+    else:
+        review = Review.objects.create(
+            user= user,
+            product= product,
+            name = user.first_name,
+            rating = data['rating'],
+            comment = data['comment'],
+        )
+
+        reviews = product.review_set.all()
+        product.numReviews = len(reviews)
+
+        total = 0 
+        for i in reviews:
+            total += i.rating
+
+        product.rating = total / len(reviews)
+        product.save()
+
+        return Response('Review Added')
+
 

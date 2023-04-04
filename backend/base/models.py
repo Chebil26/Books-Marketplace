@@ -8,6 +8,9 @@ from books.models import Book
 class Store(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     name = models.CharField(max_length=200, null=True, blank=True)
+    image = models.ImageField(null=True, blank=True,default='/placeholder.png') 
+    wilaya = models.CharField(max_length=200, null=True, blank=True)
+    
 
     def __str__(self):
         return self.name
@@ -22,7 +25,7 @@ class Product(models.Model):
     )
     
     store = models.ForeignKey(Store, on_delete=models.SET_NULL, null=True)
-    # book = models.ForeignKey(Book, on_delete=models.SET_NULL, null=True , blank=True)
+    book = models.ForeignKey(Book, on_delete=models.SET_NULL, null=True , blank=True)
     name = models.CharField(max_length=200, null=True, blank=True)
     language = models.CharField( max_length=2 , choices=LANGUAGE, default='FR' , null=True, blank=True)
     image = models.ImageField(null=True, blank=True,default='/placeholder.png')                        

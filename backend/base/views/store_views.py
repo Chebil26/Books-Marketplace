@@ -14,3 +14,24 @@ def getStores(request):
     serializer = StoreSerializer(stores, many=True)
     print(serializer.data)
     return Response(serializer.data)
+
+
+
+    
+@api_view(['GET'])
+def getStore(request, pk):
+    store = Store.objects.get(id=pk)
+    
+    serializer = StoreSerializer(store, many=False)
+    print(serializer.data)
+
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def getStoreByUser(request, pk):
+    store = Store.objects.get(id=pk)
+    print(store)
+    serializer = StoreSerializer(store, many=False)
+
+    return Response(serializer.data)
+

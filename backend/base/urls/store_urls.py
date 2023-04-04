@@ -5,6 +5,7 @@ from base.views import store_views as views
 
 urlpatterns = [
     path('', views.getStores, name="stores"),
+    path('<str:pk>/', views.getStore, name="store"),
 
 
 ]
