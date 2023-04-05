@@ -1,29 +1,55 @@
 import React, {useState, useEffect} from 'react'
 import { Row, Col } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+
+import { listStores } from '../actions/storeActions'
+import Loader from '../components/Loader'
+import Message from '../components/Message'
+import Store from '../components/Store'
+
+
 import axios from 'axios'
 
 function StoresScreen() {
-    const [stores, setStores] = useState([]);
-  
-    useEffect(() => {
-      fetch('http://localhost:8000/api/stores/')
-        .then(response => response.json())
-        .then(data => setStores(data))
-        .catch(error => console.log(error));
-    }, []);
-  
-    return (
-      <div>
-        <h1>Stores</h1>
-        <ul>
-          {stores.map(store => (
-            <li key={store.id}>
-              <h2>{store.name}</h2>
+    // const [stores, setStores] = useState([]);
 
-            </li>
-          ))}
-        </ul>
-      </div>
+    const storeList = useSelector(state => state.storeList)
+    const {error, loading, stores} = storeList
+    const dispatch = useDispatch()
+
+
+
+    useEffect(() =>{
+      dispatch(listStores())
+
+    }, [dispatch])
+  
+
+    return (
+
+
+        <div>      
+      <h1>Stores</h1>
+      {loading ? <Loader/>
+        : error ? <Message variant='danger'>{error}</Message>
+        : <Row>
+            {stores.map(store => (
+              <Col key={store.id} sm={12} md={6} lg={4} xl={3}>
+                  <Store store={store} />
+              </Col>
+            ))}
+          </Row>
+      }
+      
+
+
+          
+
+
+        </div>
+
+      
     );
   }
   

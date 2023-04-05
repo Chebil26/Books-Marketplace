@@ -62,6 +62,13 @@ function ProductEditScreen() {
 
     }, [dispatch, product, productId, history, successUpdate])
 
+
+    const handleCheckboxChange = (e) => {
+        console.log('hrllo')
+        setAvailable(e.target.checked)
+        console.log(available)
+    }
+
     const submitHandler = (e) => {
         e.preventDefault()
         dispatch(updateProduct({
@@ -192,15 +199,17 @@ function ProductEditScreen() {
 
                             <Form.Group controlId='countinstock'>
                                 <Form.Label>Availability</Form.Label>
-                                <Form.Control
-
-                                    type='number'
-                                    placeholder='Enter stock'
-                                    value={available}
-                                    onChange={(e) => setAvailable(e.target.value)}
-                                >
-                                </Form.Control>
+                    
+                                <Form.Check
+                                type="checkbox"
+                                label="Set to available"
+                                checked={available}
+                                onChange={handleCheckboxChange}
+                            />
                             </Form.Group>
+
+
+
 
                             <Form.Group controlId='category'>
                                 <Form.Label>Category</Form.Label>

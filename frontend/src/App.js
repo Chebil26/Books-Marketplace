@@ -19,6 +19,7 @@ import ProductListScreen from './screens/ProductListScreen'
 import ProductEditScreen from './screens/ProductEditScreen'
 
 import StoresScreen from './screens/StoresScreen'
+import StoreDetailScreen from './screens/StoresDetailScreen'
 
 
 
@@ -49,6 +50,7 @@ function App() {
           <Route path='/admin/product/edit/:id/' Component={ProductEditScreen} />
 
           <Route path='/stores' Component={StoresScreen} />
+          <Route path='/stores/:id' Component={StoreDetailScreen} />
         </Routes>
         </Container>
       </main>

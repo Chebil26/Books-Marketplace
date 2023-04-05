@@ -7,6 +7,8 @@ import Loader from '../components/Loader'
 import Message from '../components/Message'
 import { listProducts , deleteProduct , createProduct} from '../actions/productActions'
 import { PRODUCT_CREATE_RESET } from '../constants/productConstants'
+import { listStoreDetails } from '../actions/storeActions'
+import { listStoreByUser } from '../actions/storeActions'
 
 function ProductListScreen({ match }) {
     let history = useNavigate()
@@ -27,6 +29,12 @@ function ProductListScreen({ match }) {
     const { userInfo } = userLogin
 
 
+    const storeByUser = useSelector(state => state.storeByUser)
+    const { loading:loadingStore, error:errorStore, store } = storeByUser
+
+    const storeProducts = products.filter(product => product.store === store.name);
+
+
     useEffect(() => {
         dispatch({type: PRODUCT_CREATE_RESET})
         if (!userInfo.isAdmin) {
@@ -34,9 +42,10 @@ function ProductListScreen({ match }) {
         }
 
         if(successCreate){
-            history(`admin/product/${createdProduct._id}/edit`)
+            history(`/admin/product/edit/${createdProduct._id}/`)
         }else{
             dispatch(listProducts())
+            dispatch(listStoreByUser())
         }
 
     }, [dispatch, history, userInfo, successDelete, successCreate, createdProduct])
@@ -92,12 +101,13 @@ function ProductListScreen({ match }) {
                             </thead>
 
                             <tbody>
-                                {products.map(product => (
+                                {storeProducts.map(product => (
                                     <tr key={product._id}>
                                         <td>{product._id}</td>
                                         <td>{product.name}</td>
                                         <td>{product.price}DA</td>
                                         <td>{product.category}</td>
+                                        
                                         <td>{product.available ? 'true' : 'false'}</td>
 
 
