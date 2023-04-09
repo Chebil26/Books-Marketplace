@@ -12,6 +12,8 @@ import { PRODUCT_CREATE_REVIEW_RESET } from '../constants/productConstants'
 function ProductScreen({match }) {
     const [rating, setRating] = useState(0)
     const [comment, setComment] = useState('')
+    const placeholder = '/images/book_placeholder.png' 
+
     let history = useNavigate()
     const { id } = useParams()
     const dispatch = useDispatch()    
@@ -67,28 +69,51 @@ function ProductScreen({match }) {
                     <div>
                     <Row>
         <Col md={3}>
-            <Image src={productDetails.product.image} alt={product.name} fluid/>
+        
+            <Image src={productDetails.product.image ? productDetails.product.image :
+    productDetails.product.defaultImage ? productDetails.product.defaultImage:
+    placeholder
+            } alt={product.name} fluid  style={{ width: '70%' }}/>
+            <ListGroup variant="flush">
+
+            <ListGroup.Item>
+                    <h4><Rating value={product.rating} text={`(${product.numReviews}) `} color={'#f8e825'}/></h4>
+                </ListGroup.Item>
+
+                <ListGroup.Item>
+                    <h5>ISBN: {product.isbn}</h5>
+                </ListGroup.Item>
+
+              
+
+            </ListGroup>
         </Col>
         <Col md={6}>
             <ListGroup variant="flush">
                 <ListGroup.Item>
-                    <h3>{product.name}</h3>
+                    <h4>{product.name}</h4>
+                    <h4>by {product.author}</h4>
+                    
                 </ListGroup.Item>
 
                 <ListGroup.Item>
-                    <h3>{product.store}</h3>
+                <Link to={`/stores/${product.store_id}`}>
+                    <h4>Store: {product.store}</h4>
+                    </Link>
                 </ListGroup.Item>
 
-                <ListGroup.Item>
-                    <h4><Rating value={product.rating} text={`${product.numReviews} reviews`} color={'#f8e825'}/></h4>
-                </ListGroup.Item>
-
+                
                 <ListGroup.Item>
                     <h4>Price: {product.price}DA</h4>
                 </ListGroup.Item>
+                
+                <ListGroup.Item>
+                    <h4>Categories: {product.category}</h4>
+                </ListGroup.Item>
 
                 <ListGroup.Item>
-                    <p>description: {product.description}</p>
+                <h4>Description:</h4>
+                    <p>{product.description}</p>
                 </ListGroup.Item>
 
 

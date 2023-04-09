@@ -1,9 +1,11 @@
 
 
+from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated , IsAdminUser
 from rest_framework import status
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 
@@ -17,8 +19,24 @@ def getProducts(request):
     if query == None:
         query = ''
     products = Product.objects.filter(name__icontains=query)
+
+    page = request.query_params.get('page')
+    paginator = Paginator(products, 20)
+
+    try: 
+        products = paginator.page(page)
+    except PageNotAnInteger:
+        products = paginator.page(1)
+    except EmptyPage:
+        products = paginator.page(paginator.num_pages)
+
+    if page == None:
+        page = 1 
+
+    page = int(page)
+
     serializer = ProductSerializer(products, many=True)
-    return Response(serializer.data)
+    return Response({'products':serializer.data, 'page':page, 'pages':paginator.num_pages})
 
 @api_view(['GET'])
 def getProductsByStore(request, pk):
@@ -35,7 +53,11 @@ def getTopProducts(request):
 
 @api_view(['GET'])
 def getProduct(request, pk):
-    product = Product.objects.get(_id=pk)
+    try:
+        product = Product.objects.get(_id=pk)
+    except Product.DoesNotExist:
+        product = None
+
     serializer = ProductSerializer(product, many=False)
 
     return Response(serializer.data)
@@ -44,7 +66,7 @@ def getProduct(request, pk):
 # @permission_classes([IsAdminUser])
 def createProduct(request):
     user = request.user
-    store = Store.objects.get(id=user.id)
+    store = get_object_or_404(Store, user=user)
     product = Product.objects.create(
         store = store,
         name= 'sample name',
@@ -66,14 +88,27 @@ def createProduct(request):
 def updateProduct(request, pk):
     data = request.data
     product = Product.objects.get(_id=pk)
+    if data['num_pages']:
+        np = data['num_pages']
+    else:
+        np = 200
 
+    product.b_id = data['book_id']
     product.name = data['name']
-    product.price = data['price']
-    product.language = data['language']
+    product.author = data['author']
+    product.defaultImage = data['defaultImage']
+    product.isbn = data['isbn']
+    product.published_year = data['published_year']
+    product.num_pages = np
+    product.description = data['description']
+    product.category = data['category']
+
     product.publisher = data['publisher']
     product.available = data['available']
-    product.category = data['category']
-    product.description = data['description']
+    product.price = data['price']
+    product.language = data['language']
+    
+    
 
     product.save()
     serializer = ProductSerializer(product, many=False)

@@ -10,6 +10,7 @@ export const addToCart = (id) => async (dispatch, getState) => {
             product:data._id,
             name:data.name,
             image:data.image,
+            defaultImage:data.defaultImage,
             price:data.price,
             available:data.available,
         }

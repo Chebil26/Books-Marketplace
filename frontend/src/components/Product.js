@@ -6,35 +6,41 @@ import Rating from './Rating'
 
 function Product({product}) {
 
+  console.log(product.image)
+  const placeholder = '/images/book_placeholder.png' 
+
   return (
-    <Card className="my-3 p-3 rounded" style={{ width: '14rem' }} >
+    <Card className="my-3 p-3 rounded" style={{ width: '13rem' }} >
       <Link to={`/product/${product._id}`}>
-        <Card.Img src={product.image}  style={{ width: '100%', height: '100%' }}/>
+        <Card.Img src={product.image ? product.image :
+    product.defaultImage ? product.defaultImage:
+    placeholder
+            }  style={{ width: '100%', height: '100%' }}/>
       </Link>
 
       <Card.Body>
       <Link to={`/product/${product._id}`}>
-        <Card.Title as="div">
+        <Card.Title as="p">
             <strong>{product.name}</strong>
         </Card.Title>
       </Link>
 
 
       <Link to={`/stores/${product.store_id}`}>
-        <Card.Title as="div">
+        <Card.Title as="p">
             <strong>{product.store}</strong>
         </Card.Title>
       </Link>
       
 
-        <Card.Text as="div">
-            <div className='my-3'>
+        <Card.Text as="p">
+            <div className='my-1'>
                 
             <Rating value={product.rating} text={`${product.numReviews} reviews`} color={'#f8e825'} />
             </div>
         </Card.Text>
 
-        <Card.Text as="h4">
+        <Card.Text as="p">
             {product.price}DA
         </Card.Text>
 

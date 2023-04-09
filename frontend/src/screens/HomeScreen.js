@@ -9,7 +9,8 @@ import { listProducts } from '../actions/productActions'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import ProductCarousel from '../components/ProductCarousel'
-
+import SelectProduct from '../components/SelectProduct'
+import Paginate from '../components/Paginate'
 
 function HomeScreen() {
 
@@ -17,10 +18,9 @@ function HomeScreen() {
   const location = useLocation();
   const dispatch = useDispatch()
   const productList = useSelector(state => state.productList)
-  const {error, loading, products} = productList
+  const {error, loading, products, page, pages } = productList
 
   let keyword = location.search
-  console.log(keyword)
   useEffect(() =>{
     dispatch(listProducts(keyword))
   }, [dispatch, keyword])
@@ -28,18 +28,28 @@ function HomeScreen() {
  
   return (
     <div>
+      
       {!keyword && <ProductCarousel/> }
       
       <h1>Latest Books</h1>
+
+      
       {loading ? <Loader/>
         : error ? <Message variant='danger'>{error}</Message>
-        : <Row>
+        : 
+
+          <div>
+          <Row   >
             {products.map(product => (
-              <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+              // sm={12} md={6} lg={4} xl={3}
+              <Col key={product._id} >
                   <Product product={product} />
               </Col>
             ))}
+
           </Row>
+          <Paginate page={page} pages={pages} keyword={keyword}/>
+          </div>
       }
       
     </div>

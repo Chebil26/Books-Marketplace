@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate ,useLocation } from 'react-router-dom'
 import { LinkContainer } from 'react-router-bootstrap'
-import { Table, Button, Row, Col } from 'react-bootstrap'
+import { Table, Button, Row, Col, Badge } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
+import Paginate from '../components/Paginate'
 import { listProducts , deleteProduct , createProduct} from '../actions/productActions'
 import { PRODUCT_CREATE_RESET } from '../constants/productConstants'
 import { listStoreDetails } from '../actions/storeActions'
@@ -16,7 +17,7 @@ function ProductListScreen({ match }) {
     const dispatch = useDispatch()
 
     const productList = useSelector(state => state.productList)
-    const { loading, error, products } = productList
+    const { loading, error, products, pages , page } = productList
 
     const productDelete = useSelector(state => state.productDelete)
     const { loading:lodaingDelete, error:errorDelete , success:successDelete } = productDelete
@@ -34,7 +35,10 @@ function ProductListScreen({ match }) {
 
     const storeProducts = products.filter(product => product.store === store.name);
 
-
+    /* eslint-disable no-restricted-globals */
+    let keyword = location.search
+    /* eslint-enable no-restricted-globals */
+    console.log(keyword)
     useEffect(() => {
         dispatch({type: PRODUCT_CREATE_RESET})
         if (!userInfo.isAdmin) {
@@ -48,7 +52,7 @@ function ProductListScreen({ match }) {
             dispatch(listStoreByUser())
         }
 
-    }, [dispatch, history, userInfo, successDelete, successCreate, createdProduct])
+    }, [dispatch, history,keyword, userInfo, successDelete, successCreate, createdProduct])
 
 
     const deleteHandler = (id) => {
@@ -88,6 +92,7 @@ function ProductListScreen({ match }) {
                 : error
                     ? (<Message variant='danger'>{error}</Message>)
                     : (
+                        <div>
                         <Table striped bordered hover responsive className='table-sm'>
                             <thead>
                                 <tr>
@@ -95,7 +100,7 @@ function ProductListScreen({ match }) {
                                     <th>NAME</th>
                                     <th>PRICE</th>
                                     <th>CATEGORY</th>
-                                    <th>AVAILABLE</th>
+                                    <th>STOCK</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -108,7 +113,11 @@ function ProductListScreen({ match }) {
                                         <td>{product.price}DA</td>
                                         <td>{product.category}</td>
                                         
-                                        <td>{product.available ? 'true' : 'false'}</td>
+                                        <td>{product.available ? (
+                                            <Badge className='badge bg-success'>in stock</Badge>
+                                        ) : (
+                                            <Badge className='badge bg-danger'>out of stock</Badge>
+                                        )}</td>
 
 
                                         <td>
@@ -126,6 +135,8 @@ function ProductListScreen({ match }) {
                                 ))}
                             </tbody>
                         </Table>
+                        {/* <Paginate page={pages} pages={pages} isAdmin={true}/> */}
+                        </div>
                     )}
         </div>
     )

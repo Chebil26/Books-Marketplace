@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import { Link , useNavigate } from 'react-router-dom'
-import { Form, Button , Row , Col } from 'react-bootstrap'
+import { Form, Button , Row , Col, Card } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 
 import Loader from '../components/Loader'
@@ -58,8 +58,20 @@ function ProfileScreen() {
     }
   return (
     <Row>
-        <Col md={3}>
-            <h2>User Profile</h2>
+
+<Col>
+            <h2>User Data</h2>
+            <Card md={3}className="my-3 p-3 rounded" style={{ width: '30rem' }}>
+            <Card.Title as="h4">
+                <strong>{name}</strong>
+            </Card.Title>
+            <Card.Title as="h4">
+                <strong>{email}</strong>
+            </Card.Title>
+            </Card>
+        </Col>
+        <Col >
+            <h2>Update</h2>
             {message && <Message variant='danger'>{message}</Message>}
             {error && <Message variant='danger'>{error}</Message>}
             {loading && <Loader />}
@@ -119,9 +131,7 @@ function ProfileScreen() {
             </Form>
         </Col>
 
-        <Col md={8}>
-            <h2>User Profile</h2>
-        </Col>
+       
     </Row>
   )
 }

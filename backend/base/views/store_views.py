@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated , IsAdminUser
@@ -28,7 +29,8 @@ def getStore(request, pk):
 @api_view(['GET'])
 def getStoreByUser(request):
     user = request.user
-    store = Store.objects.get(user=user)
+    store = get_object_or_404(Store, user=user)
+    # store = Store.objects.get(user=user)
     print(store)
     serializer = StoreSerializer(store, many=False)
 

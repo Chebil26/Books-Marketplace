@@ -10,7 +10,7 @@ function SearchBox() {
     const submitHandler = (e) => {
         e.preventDefault()
         if(keyword){
-            history(`/?keyword=${keyword}`)
+            history(`/?keyword=${keyword}&page=1`)
             
         }else{
             history(location.pathname)
@@ -18,19 +18,23 @@ function SearchBox() {
     }
     return (
         <Form onSubmit={submitHandler}  className='d-flex '>
+            <Form.Group className="mb-1">
             <Form.Control
-                type='text'
-                name='q'
+                type="search"
                 onChange={(e) => setKeyword(e.target.value)}
-                className='mr-sm-2 ml-sm-5'
+                placeholder='Search..'
+                
+                aria-label="Search"
             ></Form.Control>
+            </Form.Group>
 
             <Button
+                className='mx-1'
                 type='submit'
-                variant='outline-success'
-                className='p-2'
+                variant='success'
+                
             >
-                search  <i className="fas fa-search"></i>
+                  <i className="fas fa-search"></i>
             </Button>
         </Form>
     )

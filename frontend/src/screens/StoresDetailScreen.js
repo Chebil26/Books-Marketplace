@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom'
-import { Row, Col } from 'react-bootstrap'
+import { Row, Col,Card } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { listStoreDetails } from '../actions/storeActions';
@@ -42,14 +42,19 @@ const storeProducts = products.filter(product => product.store === store.name);
 
   return (
     <div>
-      <h1>{store.name}</h1>
-      
-      <p>{store.wilaya}</p>
-      <p>{store.id}</p>
+      <Card md={3}className="my-3 p-3 rounded" style={{ width: '30rem' }}>
+            <Card.Title as="h1">
+                <strong>{store.name}</strong>
+            </Card.Title>
+            <Card.Title as="h4">
+                <strong>from {store.wilaya}</strong>
+            </Card.Title>
+            </Card>
 
       <Row>
+        <h4>{store.name}' Books</h4>
             {storeProducts.map(product => (
-              <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+              <Col key={product._id} sm={5} md={4} lg={4} xl={3}>
                   <Product product={product} />
               </Col>
             ))}
