@@ -1,4 +1,4 @@
-import { Container } from 'react-bootstrap'
+import { Row, Col, Container } from 'react-bootstrap'
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 
 import Header from './components/Header'
@@ -21,6 +21,8 @@ import ProductEditScreen from './screens/ProductEditScreen'
 import StoresScreen from './screens/StoresScreen'
 import StoreDetailScreen from './screens/StoresDetailScreen'
 
+import SideBar from './components/SideBar'
+
 
 
 
@@ -30,6 +32,12 @@ function App() {
     <Router>
       
       <Header />
+      <Row>
+        <Col sm={1}>
+          <SideBar />
+        </Col>
+        <Col sm={10}>
+      
       
       <main>
         <Container>
@@ -54,6 +62,8 @@ function App() {
         </Routes>
         </Container>
       </main>
+      </Col>
+      </Row>
       
       <Footer />
       

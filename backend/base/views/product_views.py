@@ -6,6 +6,8 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated , IsAdminUser
 from rest_framework import status
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Q
+
 
 
 
@@ -18,8 +20,7 @@ def getProducts(request):
     query = request.query_params.get('keyword')
     if query == None:
         query = ''
-    products = Product.objects.filter(name__icontains=query)
-
+    products = Product.objects.filter(Q(name__icontains=query) | Q(author__icontains=query) | Q(category__icontains=query) | Q(isbn__icontains=query)).order_by('createdAt')
     page = request.query_params.get('page')
     paginator = Paginator(products, 20)
 
@@ -40,7 +41,11 @@ def getProducts(request):
 
 @api_view(['GET'])
 def getProductsByStore(request, pk):
+    category = request.GET.get('category')
     products = Product.objects.filter(store__id__icontains=pk)
+    if category:
+        products = products.filter(category__icontains=category)
+    
     serializer = ProductSerializer(products, many=True)
     return Response(serializer.data)
 

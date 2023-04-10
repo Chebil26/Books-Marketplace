@@ -6,7 +6,6 @@ import Rating from './Rating'
 
 function Product({product}) {
 
-  console.log(product.image)
   const placeholder = '/images/book_placeholder.png' 
 
   return (
@@ -24,6 +23,9 @@ function Product({product}) {
             <strong>{product.name}</strong>
         </Card.Title>
       </Link>
+      <Card.Text as="p">
+            {product.author}
+        </Card.Text>
 
 
       <Link to={`/stores/${product.store_id}`}>

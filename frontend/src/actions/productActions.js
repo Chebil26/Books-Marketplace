@@ -40,6 +40,7 @@ import { PRODCUT_LIST_REQUEST,
 export const listProducts = (keyword = '') => async (dispatch) => {
     try{
         dispatch({type: PRODCUT_LIST_REQUEST })
+        console.log(keyword)
 
         const { data } = await axios.get(`/api/products${keyword}`)
 

@@ -3,7 +3,7 @@ import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate,useLocation  } from 'react-router-dom'
 
-import { Row, Col } from 'react-bootstrap'
+import { Row, Col, Button, Dropdown } from 'react-bootstrap'
 import Product from '../components/Product'
 import { listProducts } from '../actions/productActions'
 import Loader from '../components/Loader'
@@ -20,18 +20,89 @@ function HomeScreen() {
   const productList = useSelector(state => state.productList)
   const {error, loading, products, page, pages } = productList
 
-  let keyword = location.search
+const [filter, setFilter] = useState('')
+let keyword = location.search
+// setKey(keyword)
+
   useEffect(() =>{
-    dispatch(listProducts(keyword))
-  }, [dispatch, keyword])
+    if (keyword){
+      dispatch(listProducts(keyword))
+    }else if(filter){
+      dispatch(listProducts(filter))
+
+    }else{
+      dispatch(listProducts())
+    }
+    
+  }, [dispatch, keyword, filter])
+
+
+  const fictionFilterHandler = ( ) => {
+    setFilter('?keyword=fiction&page=1')
+  }
+
+  const novelFilterHandler = ( ) => {
+    setFilter('?keyword=novel&page=1')
+  }
+
+  const historyFilterHandler = ( ) => {
+    setFilter('?keyword=history&page=1')
+
+  }
+
+  const clearHandler = ( ) => {
+    setFilter('')
+  }
+
 
  
   return (
-    <div>
+    
+    <div >
       
       {!keyword && <ProductCarousel/> }
       
       <h1>Latest Books</h1>
+      <div style={{ paddingRight : '2rem',position: 'relative', display: 'flex', flexDirection: 'row-reverse' }}>
+      <Dropdown drop="end" alignRight>
+      <Dropdown.Toggle variant="outline-info" id="dropdown-button">
+      Filter
+      </Dropdown.Toggle>
+      <Dropdown.Menu>
+        
+          <Dropdown.Item onClick={fictionFilterHandler}>
+            <Button className='mx-1' variant="info" block>
+            Fiction
+            </Button>
+          </Dropdown.Item>
+
+          <Dropdown.Item onClick={historyFilterHandler}>
+            <Button className='mx-1' variant="info" block>
+            History
+            </Button>
+          </Dropdown.Item>
+
+          <Dropdown.Item onClick={novelFilterHandler}>
+            <Button className='mx-1' variant="info" block>
+            Novels
+            </Button>
+          </Dropdown.Item>
+
+          
+
+
+      </Dropdown.Menu>
+      <Button className='mx-1' variant="outline-warning" block  onClick={clearHandler}>
+            Clear <i class="fa-solid fa-rotate-left"></i>
+            </Button>
+    </Dropdown>
+      {/* <Button className='mx-3' variant='secondary' onClick={filterHandler}>
+        <i className='fas fa-plus'></i> Filter
+      </Button>
+      <Button className='mx-3' variant='secondary' onClick={clearHandler}>
+        <i className='fas fa-plus'></i> Clear
+      </Button> */}
+      </div>
 
       
       {loading ? <Loader/>
