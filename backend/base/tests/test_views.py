@@ -1,12 +1,13 @@
 from django.test import TestCase, Client
 from django.urls import reverse
 from rest_framework import status
-from rest_framework.test import APIClient
 from base.models import Product, Review, Store
-from base.serializers import ProductSerializer
+from base.serializers import ProductSerializer,StoreSerializer
 
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
+
+from rest_framework.test import APITestCase, APIClient
 
 # Initialize the APIClient app
 client = APIClient()
@@ -124,3 +125,64 @@ class ProductViewsTest(TestCase):
         """
         store = Store.objects.create(name='Test Store')
         product = Product.objects.create
+
+
+
+
+
+
+# store views
+
+class GetStoresTest(APITestCase):
+    def setUp(self):
+        self.url = reverse('stores')
+
+    def test_get_all_stores(self):
+        # Arrange
+        Store.objects.create(name="Test Store")
+        expected_data = StoreSerializer(Store.objects.all(), many=True).data
+
+        # Act
+        response = client.get(self.url)
+
+        # Assert
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data, expected_data)
+
+class GetStoreTest(APITestCase):
+    def setUp(self):
+        self.store = Store.objects.create(name="Test Store")
+        self.url = reverse('store', args=[self.store.id])
+
+    def test_get_store(self):
+        # Arrange
+        expected_data = StoreSerializer(self.store).data
+
+        # Act
+        response = client.get(self.url)
+
+        # Assert
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data, expected_data)
+
+
+
+# class GetStoreByUserTest(APITestCase):
+#     def setUp(self):
+#         self.user = User.objects.create_user(username='testuser', password='testpass')
+#         self.store = Store.objects.create(name="Test Store", user=self.user)
+#         self.token = Token.objects.create(user=self.user)
+#         self.url = reverse('getStoreByUser')
+
+
+#     def test_get_store_by_user(self):
+#         # Arrange
+#         client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
+#         expected_data = StoreSerializer(self.store).data
+
+#         # Act
+#         response = client.get(self.url)
+
+#         # Assert
+#         self.assertEqual(response.status_code, status.HTTP_200_OK)
+#         self.assertEqual(response.data, expected_data)
