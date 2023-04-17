@@ -56,3 +56,15 @@ h4{
     font-size: 2.5vw;
   }
 }
+
+
+.Pagination .inactive {
+  opacity: 0.5; /* Add opacity to inactive pages */
+  cursor: not-allowed; /* Change cursor for inactive pages */
+}
+
+.Pagination .active {
+  opacity: 1; /* Keep opacity at 1 for active page */
+  cursor: pointer; /* Change cursor for active page */
+}
+

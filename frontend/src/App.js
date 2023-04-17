@@ -3,6 +3,7 @@ import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 
 import Header from './components/Header'
 import Footer from './components/Footer'
+import SideBar from './components/SideBar'
 import HomeScreen from './screens/HomeScreen'
 
 import ProductScreen from './screens/ProductScreen'
@@ -21,7 +22,9 @@ import ProductEditScreen from './screens/ProductEditScreen'
 import StoresScreen from './screens/StoresScreen'
 import StoreDetailScreen from './screens/StoresDetailScreen'
 
-import SideBar from './components/SideBar'
+import PostsListScreen from './screens/PostsListScreen'
+
+
 
 
 
@@ -59,6 +62,8 @@ function App() {
 
           <Route path='/stores' Component={StoresScreen} />
           <Route path='/stores/:id' Component={StoreDetailScreen} />
+
+          <Route path='/posts' Component={PostsListScreen} />
         </Routes>
         </Container>
       </main>

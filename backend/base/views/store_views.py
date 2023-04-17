@@ -31,7 +31,6 @@ def getStoreByUser(request):
     user = request.user
     store = get_object_or_404(Store, user=user)
     # store = Store.objects.get(user=user)
-    print(store)
     serializer = StoreSerializer(store, many=False)
 
     return Response(serializer.data)

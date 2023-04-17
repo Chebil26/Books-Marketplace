@@ -83,6 +83,10 @@ function Header() {
             <LinkContainer to="/books">
               <Nav.Link >Books</Nav.Link>
             </LinkContainer>
+
+            <LinkContainer to="/posts">
+              <Nav.Link >Blogs</Nav.Link>
+            </LinkContainer>
           
 
           </Nav>

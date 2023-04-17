@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import Product, Store, Review
+from .models import Challenge, Product, Store, Review,ChallengeType
 
 
 class ReviewSerializer(serializers.ModelSerializer):
@@ -36,6 +36,20 @@ class StoreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Store
         fields = '__all__'
+
+class ChallengeSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Challenge
+        fields = '__all__'
+
+class ChallengeTypeSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ChallengeType
+        fields = '__all__'
+
+
 
 
 

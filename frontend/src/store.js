@@ -1,4 +1,5 @@
 import { createStore, combineReducers, applyMiddleware} from 'redux'
+import {configureStore} from "@reduxjs/toolkit"
 import thunk from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import { ProductListReducer, productDetailsReducer,
@@ -15,6 +16,10 @@ import { userLoginReducer,
 
 import { storeListReducer, storeDetailsReducer, storeByUserReducer } from './reducers/storeReducers'
 
+import { readingChallengeCreateReducer, readingChallengeUpdateReducer,readingChallengeDetailsReducer, readingChallengeIncrementReducer } from './reducers/challengeReducers'
+
+import counterReducer from './features/counterSlice'
+import postReducer from './features/postSlice'
 
 const reducer = combineReducers({
     productList: ProductListReducer,
@@ -35,6 +40,16 @@ const reducer = combineReducers({
     userRegister:userRegisterReducer,
     userDetails:userDetailsReducer,
     userUpdateProfile:userUpdateProfileReducer,
+
+    readingChallengeDetails: readingChallengeDetailsReducer,
+    readingChallengeCreate: readingChallengeCreateReducer,
+    readingChallengeUpdate: readingChallengeUpdateReducer,
+    readingChallengeIncrement: readingChallengeIncrementReducer,
+
+    counter: counterReducer,
+
+    post: postReducer,
+
 })
 
 const cartItemsFromStorage = localStorage.getItem('cartItems') ? 
@@ -44,15 +59,28 @@ const userInfoFromStorage = localStorage.getItem('userInfo') ?
     JSON.parse(localStorage.getItem('userInfo')) : null
 
 
+
 const initialState = {
     cart:{cartItems: cartItemsFromStorage},
     userLogin:{userInfo: userInfoFromStorage}
 } 
 
+const preloadedState = {
+    cart: { cartItems: cartItemsFromStorage },
+    userLogin: { userInfo: userInfoFromStorage },
+  };
+
 const middleware = [thunk]
 
-const store = createStore(reducer, initialState,
-    composeWithDevTools(applyMiddleware(...middleware)))
+// const store = createStore(reducer, initialState,
+//     composeWithDevTools(applyMiddleware(...middleware)))
+
+const store = configureStore({
+    reducer,
+    middleware,
+    devTools: true,
+    preloadedState,
+  })
 
 
 export default store

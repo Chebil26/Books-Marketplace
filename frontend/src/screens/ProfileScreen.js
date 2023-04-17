@@ -5,8 +5,10 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import Loader from '../components/Loader'
 import Message from '../components/Message'
+import ReadingChallenge from '../components/ReadingChallenge'
 import { getUserDetails, updateUserProfile } from '../actions/userActions'
 import { USER_UPDATE_PROFILE_RESET } from '../constants/userConstants'
+import { createReadingChallenge , readingChallengeByUser} from '../actions/challengeActions'
 function ProfileScreen() {
     let history = useNavigate()
     const [name, setName] = useState('')
@@ -14,6 +16,8 @@ function ProfileScreen() {
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
     const [message, setMessage] = useState('')
+
+    const [hasReadingChallenge, setHasReadingChallenge] = useState(false)
     
     const dispatch = useDispatch()
 
@@ -23,22 +27,42 @@ function ProfileScreen() {
     const userLogin = useSelector(state => state.userLogin)
     const { userInfo } = userLogin
 
+
     const userUpdateProfile = useSelector(state => state.userUpdateProfile)
     const { success } = userUpdateProfile
+
+    const readingChallengeDetails = useSelector(state => state.readingChallengeDetails)
+    const { loading:loadingReadingChallenge, error:errorReadingChallenge, readingChallenge } = readingChallengeDetails
+
+    const readingChallengeCreate= useSelector(state => state.readingChallengeCreate)
+    const { loading:loadingCreate, error:errorCreate , success:successCreate, readingChallenge:createdReadingChallenge } = readingChallengeCreate
+
 
     useEffect(() => {
         if(!userInfo) {
             history('/login')
         }else{
+            dispatch(readingChallengeByUser())
+            if(successCreate){
+                setHasReadingChallenge(true)
+                dispatch(readingChallengeByUser())
+                // history(`/`)
+            }
             if(!user || !user.name || success){
                 dispatch({type:USER_UPDATE_PROFILE_RESET})
                 dispatch(getUserDetails('profile'))
+                if(successCreate){
+                    history(`/`)
+                }
             }else{
                 setName(user.name)
                 setEmail(user.email)
             }
         }
-    }, [dispatch, history, userInfo, user, success])
+    }, [dispatch, history, userInfo, user, success,successCreate])
+
+    console.log(readingChallenge)
+
 
     const submitHandler = (e) => {
         e.preventDefault()
@@ -56,10 +80,28 @@ function ProfileScreen() {
         }
         
     }
-  return (
+
+    const createReadingChallengeHandler = () => {
+        dispatch(createReadingChallenge())
+    } 
+
+    return (
     <Row>
 
 <Col>
+            {!readingChallenge && 
+                <Button className='my-3' onClick={createReadingChallengeHandler}>
+                    <i className='fas fa-plus'></i> Set Reading challenge
+                </Button>
+            }
+
+
+            {readingChallenge && <ReadingChallenge readingChallenge={readingChallenge}/>}
+
+            {loadingCreate && <Loader />}
+            {errorCreate && <Message variant='danger'>{errorCreate}</Message>}
+
+
             <h2>User Data</h2>
             <Card md={3}className="my-3 p-3 rounded" style={{ width: '30rem' }}>
             <Card.Title as="h4">
