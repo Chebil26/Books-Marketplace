@@ -80,9 +80,7 @@ function Header() {
               <Nav.Link >Stores</Nav.Link>
             </LinkContainer>
 
-            <LinkContainer to="/books">
-              <Nav.Link >Books</Nav.Link>
-            </LinkContainer>
+
 
             <LinkContainer to="/posts">
               <Nav.Link >Blogs</Nav.Link>
@@ -100,6 +98,10 @@ function Header() {
               <Nav>
                 <LinkContainer to='/admin/productlist'>
                                         <Nav.Link>My Products</Nav.Link>
+                                    </LinkContainer>
+
+                                    <LinkContainer to='/blog'>
+                                        <Nav.Link>My Blog</Nav.Link>
                                     </LinkContainer>
                                     <LinkContainer to={`/stores/${store.id}`}>
                                         <Nav.Link>{store.name}</Nav.Link>
@@ -122,10 +124,11 @@ function Header() {
             <Nav.Link eventKey={2} href="#memes">
               Dank memes
                                 </Nav.Link> */}
-                                            <Button className='mx-3' variant='secondary' onClick={createProductHandler}>
+                                <Button className='mx-3' variant='secondary' onClick={createProductHandler}>
                                     <i className='fas fa-plus'></i> Create
                                 </Button>
-             </Nav>
+
+            </Nav>
             )}
 
             <SearchBox />

@@ -5,6 +5,9 @@ import { getPosts } from '../features/postSlice';
 import Post from '../components/Post';
 
 function PostsListScreen() {
+    const storeByUser = useSelector(state => state.storeByUser)
+    const { loading:loadingStore, error:errorStore, store } = storeByUser
+
     const posts = useSelector((state) => state.post.posts);
     const loading = useSelector((state) => state.post.loading);
     const error = useSelector((state) => state.post.error);
@@ -24,7 +27,6 @@ function PostsListScreen() {
   
     return (
         
-
         <div>
         {posts.map(post => (
         <Post key={post.id} post={post} />

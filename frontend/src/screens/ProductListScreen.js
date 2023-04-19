@@ -10,6 +10,8 @@ import { listProducts , deleteProduct , createProduct} from '../actions/productA
 import { PRODUCT_CREATE_RESET } from '../constants/productConstants'
 import { listStoreDetails } from '../actions/storeActions'
 import { listStoreByUser } from '../actions/storeActions'
+import { createPost } from '../features/postSlice';
+
 
 function ProductListScreen({ match }) {
     let history = useNavigate()
@@ -38,7 +40,7 @@ function ProductListScreen({ match }) {
     /* eslint-disable no-restricted-globals */
     let keyword = location.search
     /* eslint-enable no-restricted-globals */
-    console.log(keyword)
+
     useEffect(() => {
         dispatch({type: PRODUCT_CREATE_RESET})
         if (!userInfo.isAdmin) {

@@ -21,6 +21,8 @@ import { readingChallengeCreateReducer, readingChallengeUpdateReducer,readingCha
 import counterReducer from './features/counterSlice'
 import postReducer from './features/postSlice'
 
+import { postCreateReducer, postUpdateReducer } from './reducers/blogReducers'
+
 const reducer = combineReducers({
     productList: ProductListReducer,
     productDetails: productDetailsReducer,
@@ -49,6 +51,9 @@ const reducer = combineReducers({
     counter: counterReducer,
 
     post: postReducer,
+
+    postCreate: postCreateReducer,
+    postUpdate: postUpdateReducer,
 
 })
 

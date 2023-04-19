@@ -20,12 +20,6 @@ function ReadingChallenge({readingChallenge}) {
     const [book, setBook] = useState('')
     const [books_read, setBooks_read] = useState('')
 
-
-
-
-
-
-
     const handleincrementClick = (e) => {
       e.preventDefault()
       dispatch(incrementReadingChallenge())
@@ -35,10 +29,6 @@ function ReadingChallenge({readingChallenge}) {
       setBooks_read(readingChallenge.books_read)
     }
 
-
-
-
-
     const addBookHandler = (e) => {
       e.preventDefault()
       dispatch(updateReadingChallenge({
@@ -47,11 +37,6 @@ function ReadingChallenge({readingChallenge}) {
       }))
       dispatch(readingChallengeByUser())
     }
-
-
-
-
-
 
   return (
     <Card className="my-1 p-1 rounded" style={{ width: '25rem' }} >

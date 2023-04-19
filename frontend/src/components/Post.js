@@ -12,7 +12,8 @@ function Post({ post }) {
       {/* <Card.Img variant="top" src={post.image} /> */}
       <Card.Body>
         <Card.Title>{post.title}</Card.Title>
-        <Card.Text>By {post.author}</Card.Text>
+        <Card.Subtitle>By {post.store}</Card.Subtitle>
+        
         <Card.Text>{post.content}</Card.Text>
         {/* <Button variant="primary">Read More</Button> */}
       </Card.Body>
