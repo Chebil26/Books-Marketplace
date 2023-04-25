@@ -107,13 +107,10 @@ def updateProduct(request, pk):
     product.num_pages = np
     product.description = data['description']
     product.category = data['category']
-
     product.publisher = data['publisher']
     product.available = data['available']
     product.price = data['price']
     product.language = data['language']
-    
-    
 
     product.save()
     serializer = ProductSerializer(product, many=False)
