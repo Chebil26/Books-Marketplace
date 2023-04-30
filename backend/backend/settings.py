@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'base.apps.BaseConfig',
     'books',
     'blog',
+    'recommendation',
 ]
 
 REST_FRAMEWORK = {

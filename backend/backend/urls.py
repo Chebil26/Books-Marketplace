@@ -29,6 +29,7 @@ urlpatterns = [
     path('api/challenges/' , include('base.urls.challenge_urls')),
     path('api/orders/' , include('base.urls.order_urls')),
     path('api/blogs/' , include('blog.urls')),
+    path('api/recommendation/', include('recommendation.urls')),
     path('', include('books.urls')),
 ]
 

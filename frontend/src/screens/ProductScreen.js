@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import axios from 'axios'
 import { Link, useParams } from 'react-router-dom'
 import {useDispatch, useSelector} from 'react-redux'
 import { useNavigate } from 'react-router-dom'
@@ -9,10 +10,16 @@ import Message from '../components/Message'
 import { listProductDetails, createProductReview } from '../actions/productActions'
 import { PRODUCT_CREATE_REVIEW_RESET } from '../constants/productConstants'
 
+import { getBookRecommendations, clearBookRecommendations } from '../actions/recommendationActions'
+
 function ProductScreen({match }) {
     const [rating, setRating] = useState(0)
     const [comment, setComment] = useState('')
+    const [recommended, setRecommended] = useState(null)
+
     const placeholder = '/images/book_placeholder.png' 
+
+    
 
     let history = useNavigate()
     const { id } = useParams()
@@ -26,7 +33,10 @@ function ProductScreen({match }) {
     const productReviewCreate = useSelector(state => state.productReviewCreate)
     const { loading:loadingProductReview, error:errorProductReview, success:successProductReview } = productReviewCreate
 
+    const bookRecommendations = useSelector((state) => state.bookRecommendations);
+    const { loading:loadingBookRecommendations, error:errorBookRecommendations, recommendations } = bookRecommendations;
 
+    console.log('before', recommendations)
     useEffect(() =>{
         if (successProductReview){
             setRating(0)
@@ -34,7 +44,19 @@ function ProductScreen({match }) {
             dispatch({type:PRODUCT_CREATE_REVIEW_RESET})
         }
         dispatch(listProductDetails(id))
-    }, [dispatch, match, successProductReview])
+        dispatch(getBookRecommendations(product.name));
+
+    }, [dispatch, match, successProductReview,product.name])
+
+    
+
+    // Clear the recommendations state after using it
+    
+
+console.log('after', recommendations)
+
+
+    
 
 
     const submitHandler = (e) => {
@@ -71,8 +93,8 @@ function ProductScreen({match }) {
         <Col md={3}>
         
             <Image src={productDetails.product.image ? productDetails.product.image :
-    productDetails.product.defaultImage ? productDetails.product.defaultImage:
-    placeholder
+                productDetails.product.defaultImage ? productDetails.product.defaultImage:
+                placeholder
             } alt={product.name} fluid  style={{ width: '70%' }}/>
             <ListGroup variant="flush">
 
@@ -152,7 +174,33 @@ function ProductScreen({match }) {
                     </ListGroup.Item>
                 </ListGroup>
             </Card>
+            {recommendations && (
+                <div>
+                    <h4>Recommended Books</h4>
+                    <Row>
+                    {Object.keys(recommendations).map((bookTitle) => (
+                        <Col md={6} key={bookTitle}>
+                        <Card className="mb-4">
+                            <Card.Img
+                            variant="top"
+                            src={recommendations[bookTitle]["Image-URL-M"]}
+                            />
+                            <Card.Body>
+                            <Card.Title>{bookTitle}</Card.Title>
+                            <Card.Subtitle className="mb-2 text-muted">
+                                {recommendations[bookTitle]["Book-Author"]}
+                            </Card.Subtitle>
+                            </Card.Body>
+                        </Card>
+                        </Col>
+                    ))}
+                    </Row>
+                </div>
+            )}
+            
         </Col>
+
+        
                     </Row>
 
 
