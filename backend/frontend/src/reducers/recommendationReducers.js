@@ -2,7 +2,7 @@ import {
     BOOK_RECOMMENDATIONS_REQUEST,
     BOOK_RECOMMENDATIONS_SUCCESS,
     BOOK_RECOMMENDATIONS_FAIL,
-    CLEAR_BOOK_RECOMMENDATIONS,
+    CLEAR_BOOK_RECOMMENDATIONS
   } from '../constants/recommendationConstants';
   
   export const bookRecommendationsReducer = (state = { recommendations: [] }, action) => {
