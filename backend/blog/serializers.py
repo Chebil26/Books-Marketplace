@@ -2,11 +2,11 @@ from rest_framework import serializers
 from base.serializers import StoreSerializer
 
 from base.models import Store
-from .models import Post, Comment
+from .models import Post, Comm
 
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Comment
+        model = Comm
         fields = '__all__'
 
 class PostSerializer(serializers.ModelSerializer):
@@ -27,3 +27,12 @@ class PostSerializer(serializers.ModelSerializer):
             serializer = StoreSerializer(store)
             return serializer.data
         return None
+    
+
+class CommSerializer(serializers.ModelSerializer):
+    user = serializers.StringRelatedField(read_only=True)
+
+    class Meta:
+        model = Comm
+        fields = ('id', 'post', 'user', 'content', 'created_at')
+        read_only_fields = ('id', 'post', 'created_at')

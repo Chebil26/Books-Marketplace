@@ -24,6 +24,7 @@ import StoreDetailScreen from './screens/StoresDetailScreen'
 
 import PostsListScreen from './screens/PostsListScreen'
 import PostCreateScreen from './screens/PostCreateScreen'
+import PostDetailScreen from './screens/PostDetailScreen'
 
 
 
@@ -66,6 +67,7 @@ function App() {
 
           <Route path='/posts' Component={PostsListScreen} />
           <Route path='/blog' Component={PostCreateScreen} />
+          <Route path='/posts/:id' Component={PostDetailScreen} />
         </Routes>
         </Container>
       </main>

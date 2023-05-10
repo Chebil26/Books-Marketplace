@@ -168,28 +168,27 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 #     }
 # }
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'adeem',
-        'USER': 'chebil',
-        'PASSWORD': 'HJCpFgaRT6eJbyTsXbuwij78TJ40YN0m',
-        'HOST': 'dpg-ch7dego2qv26p1cd2670-a.frankfurt-postgres.render.com',
-        'PORT': '5432',
-    }
-}
-
 # DATABASES = {
 #     'default': {
-#         #'ENGINE': 'django.db.backends.sqlite3',
 #         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'postgres',
-#         'USER': 'postgres',
-#         'PASSWORD': 'pipocici55',
-#         'HOST': 'localhost',
+#         'NAME': 'adeem',
+#         'USER': 'chebil',
+#         'PASSWORD': 'HJCpFgaRT6eJbyTsXbuwij78TJ40YN0m',
+#         'HOST': 'dpg-ch7dego2qv26p1cd2670-a.frankfurt-postgres.render.com',
 #         'PORT': '5432',
 #     }
 # }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': 'pipocici55',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
+}
 
 
 # Password validation
